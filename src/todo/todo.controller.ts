@@ -19,6 +19,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from '@prisma/client';
 
+// todoのエンドポイントをjwtでプロテクトする
 @UseGuards(AuthGuard('jwt'))
 @Controller('todo')
 export class TodoController {
@@ -27,11 +28,15 @@ export class TodoController {
   @Get()
   getTasks(@Req() req: Request): Promise<Task[]> {
     return this.todoService.getTasks(req.user.id);
+    // req.useはstrategyで設定したものが入っている
+    // nestjsでリクエストに自動で入る。userの情報が入っている
   }
 
+  // paramterをもとに取得する
   @Get(':id')
   getTaskById(
     @Req() req: Request,
+    // paramterから取得して、型を指定する,
     @Param('id', ParseIntPipe) taskId: number,
   ): Promise<Task> {
     return this.todoService.getTaskById(req.user.id, taskId);
