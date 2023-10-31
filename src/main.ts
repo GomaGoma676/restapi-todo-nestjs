@@ -20,6 +20,7 @@ async function bootstrap() {
     csurf({
       cookie: {
         httpOnly: true,
+        // ここにsecureをtrueにすると、httpsの時のみcookieが送られる
         sameSite: 'none',
         secure: true,
       },

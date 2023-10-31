@@ -27,6 +27,8 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
+  // signUpは二つあるが、controllerのsignUpとserviceのsignUpは別物
+
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -36,7 +38,8 @@ export class AuthController {
     const jwt = await this.authService.login(dto);
     res.cookie('access_token', jwt.accessToken, {
       httpOnly: true,
-      secure: true,
+      // クライアントで読み込めない
+      secure: false,
       sameSite: 'none',
       path: '/',
     });
@@ -50,7 +53,7 @@ export class AuthController {
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response): Msg {
     res.cookie('access_token', '', {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: 'none',
       path: '/',
     });
